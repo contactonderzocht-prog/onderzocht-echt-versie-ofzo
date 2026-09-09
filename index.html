@@ -176,6 +176,8 @@
       margin-bottom: 0.75rem;
     }
 
+    .badge-survey { background: var(--badge-active); color: #fff; }
+
     .card h3 {
       margin: 0 0 0.5rem 0;
       font-size: 1.1rem;
@@ -205,6 +207,13 @@
     }
 
     .btn:hover { background: var(--accent); color: #000; }
+
+    .empty-msg {
+      color: var(--text-muted);
+      font-style: italic;
+      font-size: 0.9rem;
+      padding: 0.5rem 0;
+    }
 
     /* OVER & FAQ SECTIE */
     .about-faq-box {
@@ -248,6 +257,10 @@
       font-size: 0.9rem;
       color: var(--text-muted);
     }
+
+    /* PAGINA'S WISSELEN */
+    .page { display: none; }
+    .page.active { display: block; }
 
     /* LEES MODAL VOOR ARTIKELEN */
     .modal {
@@ -296,15 +309,19 @@
 
   <!-- HEADER -->
   <header>
-    <div class="logo" onclick="window.location.reload()">ONDERZOCHT<span>.</span></div>
+    <div class="logo" onclick="showPage('home')">ONDERZOCHT<span>.</span></div>
     <div class="social-links">
       <a href="https://www.instagram.com/onderzocht_/" target="_blank" rel="noopener">📸 @onderzocht_</a>
       <a href="mailto:contact.onderzocht@gmail.com?subject=Vraag%20of%20Tip%20voor%20Onderzocht">✉️ E-mail</a>
     </div>
   </header>
 
+  <!-- CATEGORIEËN NAVIGATIEBALK -->
   <nav class="category-bar">
-    <button class="cat-btn active">🏠 Alle Artikelen</button>
+    <button class="cat-btn active" id="btn-home" onclick="showPage('home')">🏠 Startpagina</button>
+    <button class="cat-btn" id="btn-pretparken" onclick="showPage('pretparken')">🎢 Pretparken</button>
+    <button class="cat-btn" id="btn-historie" onclick="showPage('historie')">📜 Historie</button>
+    <button class="cat-btn" id="btn-enquetes" onclick="showPage('enquetes')">📊 Enquêtes</button>
   </nav>
 
   <div class="container">
@@ -315,41 +332,97 @@
       <button class="btn-notif-small" onclick="alert('Meldingen ingeschakeld!')">Aanzetten</button>
     </div>
 
-    <!-- ARTIKELEN SECTIE -->
-    <div class="section-title">✨ Nieuwste Artikelen</div>
-    <div id="cms-artikelen-grid" class="grid">
-      <p style="color: var(--text-muted);">Artikelen laden...</p>
-    </div>
-
-    <!-- OVER ONDERZOCHT & FAQ -->
-    <div class="about-faq-box">
-      <h2>Over Onderzocht</h2>
-      <p style="color: var(--text-muted);">
-        <strong>Onderzocht</strong> is een onafhankelijk platform voor diepgaande onderzoeken, historische weetjes en publieksenquêtes.
-      </p>
-
-      <div class="contact-links-box">
-        📌 <strong>Volg of bereik ons direct:</strong><br>
-        • Instagram: <a href="https://www.instagram.com/onderzocht_/" target="_blank" rel="noopener">@onderzocht_</a><br>
-        • E-mail: <a href="mailto:contact.onderzocht@gmail.com?subject=Inzending%20of%20Tip">contact.onderzocht@gmail.com</a>
+    <!-- ==================== 1. STARTPAGINA ==================== -->
+    <div id="page-home" class="page active">
+      
+      <!-- CMS ARTIKELEN SECTIE -->
+      <div class="section-title">✨ Nieuwste Artikelen</div>
+      <div id="grid-nieuwste" class="grid">
+        <p class="empty-msg">Nog geen artikelen gepubliceerd.</p>
       </div>
 
-      <h3 style="margin-top: 2rem;">Veelgestelde Vragen (FAQ)</h3>
+      <!-- POPULAIR / MEEST BEKEKEN -->
+      <div class="section-title">🔥 Meest Bekeken</div>
+      <div id="grid-meest-bekeken" class="grid">
+        <p class="empty-msg">Nog geen artikelen om weer te geven.</p>
+      </div>
 
-      <details>
-        <summary>Hoe ga ik te werk?</summary>
-        <p>Ik raadpleeg openbare archieven, spreek met experts en benader bedrijven via officiële wegen om betrouwbare en amusante artikelen te schrijven.</p>
-      </details>
+      <!-- PRETPARKEN -->
+      <div class="section-title">🎢 Pretparken</div>
+      <div id="grid-pretparken" class="grid">
+        <p class="empty-msg">Nog geen artikelen in deze categorie.</p>
+      </div>
 
-      <details>
-        <summary>Kan ik zelf een idee of tip insturen?</summary>
-        <p>Absoluut! Heb jij een brandende vraag over een pretpark of voorwerp? Stuur een DM via onze <a href="https://www.instagram.com/onderzocht_/" target="_blank" rel="noopener">Instagram (@onderzocht_)</a> of stuur een e-mail naar <a href="mailto:contact.onderzocht@gmail.com">contact.onderzocht@gmail.com</a>.</p>
-      </details>
+      <!-- GESCHIEDENIS VAN OBJECTEN -->
+      <div class="section-title">📜 Geschiedenis van Objecten</div>
+      <div id="grid-historie" class="grid">
+        <p class="empty-msg">Nog geen artikelen in deze categorie.</p>
+      </div>
+
+      <!-- ENQUÊTES & PUBLIEKSONDERZOEK -->
+      <div class="section-title">📊 Enquêtes & Resultaten</div>
+      <div id="grid-enquetes" class="grid">
+        <p class="empty-msg">Nog geen enquêtes gepubliceerd.</p>
+      </div>
+
+      <!-- OVER ONDERZOCHT & FAQ -->
+      <div class="about-faq-box">
+        <h2>Over Onderzocht</h2>
+        <p style="color: var(--text-muted);">
+          <strong>Onderzocht</strong> is een onafhankelijk platform voor diepgaande onderzoeken, historische weetjes en publieksenquêtes. Van het mysterie achter onderhoud in attractieparken tot de geschiedenis van alledaagse voorwerpen: wij zoeken het uit voor entertainment.
+        </p>
+
+        <div class="contact-links-box">
+          📌 <strong>Volg of bereik ons direct:</strong><br>
+          • Instagram: <a href="https://www.instagram.com/onderzocht_/" target="_blank" rel="noopener">@onderzocht_</a><br>
+          • E-mail: <a href="mailto:contact.onderzocht@gmail.com?subject=Inzending%20of%20Tip">contact.onderzocht@gmail.com</a>
+        </div>
+
+        <h3 style="margin-top: 2rem;">Veelgestelde Vragen (FAQ)</h3>
+
+        <details>
+          <summary>Hoe ga ik te werk?</summary>
+          <p>Ik raadpleeg openbare archieven, spreek met experts en benader bedrijven via officiële wegen om betrouwbare en amusante artikelen te schrijven.</p>
+        </details>
+
+        <details>
+          <summary>Hoe werken de enquêtes?</summary>
+          <p>Iedereen kan gratis meedoen via een simpele Google Form. Zodra de enquête sluit, verwerk ik de resultaten in een helder artikel met grafieken.</p>
+        </details>
+
+        <details>
+          <summary>Kan ik zelf een idee of tip insturen?</summary>
+          <p>Absoluut! Heb jij een brandende vraag over een pretpark of voorwerp? Stuur een DM via onze <a href="https://www.instagram.com/onderzocht_/" target="_blank" rel="noopener">Instagram (@onderzocht_)</a> of stuur een e-mail naar <a href="mailto:contact.onderzocht@gmail.com">contact.onderzocht@gmail.com</a>.</p>
+        </details>
+      </div>
+
+    </div>
+
+    <!-- ==================== 2. SEPARATE CATEGORIE PAGINA'S ==================== -->
+    <div id="page-pretparken" class="page">
+      <div class="section-title">🎢 Alle Artikelen: Pretparken</div>
+      <div id="grid-cat-pretparken" class="grid">
+        <p class="empty-msg">Geen artikelen in de categorie Pretparken.</p>
+      </div>
+    </div>
+
+    <div id="page-historie" class="page">
+      <div class="section-title">📜 Alle Artikelen: Historie van Objecten</div>
+      <div id="grid-cat-historie" class="grid">
+        <p class="empty-msg">Geen artikelen in de categorie Historie.</p>
+      </div>
+    </div>
+
+    <div id="page-enquetes" class="page">
+      <div class="section-title">📊 Alle Enquêtes & Resultaten</div>
+      <div id="grid-cat-enquetes" class="grid">
+        <p class="empty-msg">Geen enquêtes of uitslagen aanwezig.</p>
+      </div>
     </div>
 
   </div>
 
-  <!-- LEES MODAL VOOR CMS ARTIKELEN -->
+  <!-- LEES MODAL VOOR ARTIKELEN -->
   <div id="article-modal" class="modal">
     <div class="modal-content">
       <button class="close-btn" onclick="closeModal()">✕ Sluiten</button>
@@ -362,20 +435,41 @@
   </footer>
 
   <script>
+    function showPage(pageName) {
+      const pages = document.querySelectorAll('.page');
+      pages.forEach(page => page.classList.remove('active'));
+
+      const buttons = document.querySelectorAll('.cat-btn');
+      buttons.forEach(btn => btn.classList.remove('active'));
+
+      document.getElementById('page-' + pageName).classList.add('active');
+      const activeBtn = document.getElementById('btn-' + pageName);
+      if (activeBtn) activeBtn.classList.add('active');
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
     const articlesMap = {};
 
     async function loadCMSArticles() {
-      const grid = document.getElementById('cms-artikelen-grid');
       try {
         const response = await fetch('https://api.github.com/repos/contactonderzocht-prog/onderzocht-echt-versie-ofzo/contents/content/artikelen');
         
-        if (!response.ok) {
-          grid.innerHTML = '<p style="color: var(--text-muted);">Nog geen gepubliceerde artikelen aanwezig.</p>';
-          return;
-        }
+        if (!response.ok) return;
 
         const files = await response.json();
-        grid.innerHTML = '';
+        
+        const gridNieuwste = document.getElementById('grid-nieuwste');
+        const gridMeestBekeken = document.getElementById('grid-meest-bekeken');
+        const gridPretparken = document.getElementById('grid-pretparken');
+        const gridHistorie = document.getElementById('grid-historie');
+        const gridEnquetes = document.getElementById('grid-enquetes');
+
+        const gridCatPretparken = document.getElementById('grid-cat-pretparken');
+        const gridCatHistorie = document.getElementById('grid-cat-historie');
+        const gridCatEnquetes = document.getElementById('grid-cat-enquetes');
+
+        let countNieuwste = 0, countPretparken = 0, countHistorie = 0, countEnquetes = 0;
 
         for (const [index, file] of files.entries()) {
           if (file.name.endsWith('.md')) {
@@ -388,26 +482,66 @@
 
             const title = titleMatch ? titleMatch[1] : 'Geen titel';
             const summary = summaryMatch ? summaryMatch[1] : '';
-            const category = categoryMatch ? categoryMatch[1] : 'Artikel';
+            const category = categoryMatch ? categoryMatch[1] : 'Algemeen';
 
             const bodyContent = content.replace(/^---[\s\S]*?---/, '');
             articlesMap[index] = { title, bodyContent };
 
+            const isSurvey = category.toLowerCase().includes('enquête') || category.toLowerCase().includes('enquete');
+            const badgeClass = isSurvey ? 'badge badge-survey' : 'badge';
+
             const cardHtml = `
               <div class="card">
                 <div class="card-body">
-                  <span class="badge">${category}</span>
+                  <span class="${badgeClass}">${category}</span>
                   <h3>${title}</h3>
-                  <p>${summary || 'Klik hieronder om dit artikel te lezen.'}</p>
+                  <p>${summary || 'Klik hieronder om te bekijken.'}</p>
                   <button class="btn" onclick="readArticle(${index})">Lees Artikel ➔</button>
                 </div>
               </div>
             `;
-            grid.innerHTML += cardHtml;
+
+            // 1. Voeg toe aan Nieuwste
+            if (countNieuwste === 0) gridNieuwste.innerHTML = '';
+            gridNieuwste.innerHTML += cardHtml;
+            countNieuwste++;
+
+            // Eerste artikel ook bij Meest Bekeken tonen
+            if (countNieuwste === 1) {
+              gridMeestBekeken.innerHTML = cardHtml;
+            }
+
+            // 2. Sorteren per categorie
+            const catLower = category.toLowerCase();
+            if (catLower.includes('pretpark')) {
+              if (countPretparken === 0) {
+                gridPretparken.innerHTML = '';
+                gridCatPretparken.innerHTML = '';
+              }
+              gridPretparken.innerHTML += cardHtml;
+              gridCatPretparken.innerHTML += cardHtml;
+              countPretparken++;
+            } else if (catLower.includes('historie') || catLower.includes('geschiedenis')) {
+              if (countHistorie === 0) {
+                gridHistorie.innerHTML = '';
+                gridCatHistorie.innerHTML = '';
+              }
+              gridHistorie.innerHTML += cardHtml;
+              gridCatHistorie.innerHTML += cardHtml;
+              countHistorie++;
+            } else if (isSurvey) {
+              if (countEnquetes === 0) {
+                gridEnquetes.innerHTML = '';
+                gridCatEnquetes.innerHTML = '';
+              }
+              gridEnquetes.innerHTML += cardHtml;
+              gridCatEnquetes.innerHTML += cardHtml;
+              countEnquetes++;
+            }
           }
         }
       } catch (err) {
-        grid.innerHTML = '<p style="color: var(--text-muted);">Geen artikelen geladen.</p>';
+        console.log('Fout bij laden van artikelen:', err);
       }
     }
 
