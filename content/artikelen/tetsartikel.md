@@ -1,7 +1,7 @@
 ---
 title: Tetsartikel
 category: Pretparken & ZOO
-featured: Standaard artikel
+featured: ✨ Nieuwste Onderzoek
 date: 2026-09-09T22:03:00.000+02:00
 image: /images/schermafbeelding-2026-08-07-230341.png
 description: Dit is gewoon een test
