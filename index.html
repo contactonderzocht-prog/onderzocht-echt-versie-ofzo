@@ -10,7 +10,7 @@
 
   <!-- Netlify Identity Widget -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-  <!-- Marked parser voor Markdown artikelen -->
+  <!-- Markdown parser -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
   <style>
@@ -33,6 +33,7 @@
       line-height: 1.5;
     }
 
+    /* HEADER */
     header {
       background-color: rgba(30, 41, 59, 0.95);
       position: sticky;
@@ -65,6 +66,7 @@
 
     .social-links a:hover { color: var(--accent); }
 
+    /* CATEGORIEËN NAVIGATIEBALK */
     .category-bar {
       background: #1a2332;
       display: flex;
@@ -99,6 +101,7 @@
       padding: 1.5rem 1rem;
     }
 
+    /* COMPACTE MELDINGSBALK */
     .notification-bar {
       background: var(--card-bg);
       border: 1px solid rgba(245, 158, 11, 0.3);
@@ -120,8 +123,10 @@
       font-size: 0.75rem;
       font-weight: bold;
       cursor: pointer;
+      white-space: nowrap;
     }
 
+    /* TITELS EN RASTER */
     .section-title {
       font-size: 1.3rem;
       text-transform: uppercase;
@@ -152,6 +157,14 @@
       border-color: var(--accent);
     }
 
+    .card-img {
+      width: 100%;
+      height: 180px;
+      background-color: #334155;
+      background-size: cover;
+      background-position: center;
+    }
+
     .card-body {
       padding: 1.25rem;
       display: flex;
@@ -171,8 +184,20 @@
       margin-bottom: 0.75rem;
     }
 
-    .card h3 { margin: 0 0 0.5rem 0; font-size: 1.1rem; }
-    .card p { color: var(--text-muted); font-size: 0.9rem; margin: 0 0 1rem 0; flex-grow: 1; }
+    .badge-survey { background: var(--badge-active); color: #fff; }
+
+    .card h3 {
+      margin: 0 0 0.5rem 0;
+      font-size: 1.1rem;
+      line-height: 1.3;
+    }
+
+    .card p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin: 0 0 1rem 0;
+      flex-grow: 1;
+    }
 
     .btn {
       display: inline-block;
@@ -191,7 +216,54 @@
 
     .btn:hover { background: var(--accent); color: #000; }
 
-    /* POP-UP ARTIKEL LEZER */
+    /* OVER & FAQ SECTIE */
+    .about-faq-box {
+      background: var(--card-bg);
+      border-radius: 8px;
+      padding: 2rem;
+      margin-top: 4rem;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .contact-links-box {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      background: rgba(15, 23, 42, 0.6);
+      border-radius: 6px;
+      border: 1px solid rgba(245, 158, 11, 0.2);
+    }
+
+    .contact-links-box a {
+      color: var(--accent);
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    details {
+      background: rgba(15, 23, 42, 0.6);
+      margin-bottom: 0.75rem;
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    summary {
+      font-weight: 700;
+      color: var(--accent);
+      cursor: pointer;
+    }
+
+    details p {
+      margin: 0.75rem 0 0 0;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    /* PAGINA'S WISSELEN */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* LEES MODAL VOOR ARTIKELEN */
     .modal {
       display: none;
       position: fixed;
@@ -224,24 +296,6 @@
       cursor: pointer;
     }
 
-    .about-faq-box {
-      background: var(--card-bg);
-      border-radius: 8px;
-      padding: 2rem;
-      margin-top: 4rem;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    details {
-      background: rgba(15, 23, 42, 0.6);
-      margin-bottom: 0.75rem;
-      padding: 0.75rem 1rem;
-      border-radius: 6px;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    summary { font-weight: 700; color: var(--accent); cursor: pointer; }
-
     footer {
       text-align: center;
       padding: 2rem;
@@ -254,46 +308,181 @@
 </head>
 <body>
 
+  <!-- HEADER -->
   <header>
-    <div class="logo" onclick="window.location.reload()">ONDERZOCHT<span>.</span></div>
+    <div class="logo" onclick="showPage('home')">ONDERZOCHT<span>.</span></div>
     <div class="social-links">
-      <a href="https://www.instagram.com/onderzocht_/" target="_blank">📸 @onderzocht_</a>
-      <a href="mailto:contact.onderzocht@gmail.com">✉️ E-mail</a>
+      <a href="https://www.instagram.com/onderzocht_/" target="_blank" rel="noopener">📸 @onderzocht_</a>
+      <a href="mailto:contact.onderzocht@gmail.com?subject=Vraag%20of%20Tip%20voor%20Onderzocht">✉️ E-mail</a>
     </div>
   </header>
 
+  <!-- CATEGORIEËN NAVIGATIEBALK -->
   <nav class="category-bar">
-    <button class="cat-btn active">🏠 Alle Onderzoeken</button>
+    <button class="cat-btn active" id="btn-home" onclick="showPage('home')">🏠 Startpagina</button>
+    <button class="cat-btn" id="btn-pretparken" onclick="showPage('pretparken')">🎢 Pretparken & ZOO</button>
+    <button class="cat-btn" id="btn-historie" onclick="showPage('historie')">📜 Historie</button>
+    <button class="cat-btn" id="btn-enquetes" onclick="showPage('enquetes')">📊 Enquêtes</button>
   </nav>
 
   <div class="container">
+
+    <!-- SUBTIELE KLEINE MELDINGSBALK -->
     <div class="notification-bar">
       <span>🔔 <strong>Meldingen:</strong> Ontvang een bericht bij nieuwe onderzoeken.</span>
       <button class="btn-notif-small" onclick="alert('Meldingen ingeschakeld!')">Aanzetten</button>
     </div>
 
-    <div class="section-title">📜 Gepubliceerde Artikelen</div>
-    <div id="artikelen-grid" class="grid">
-      <p style="color: var(--text-muted);">Artikelen laden uit het CMS...</p>
+    <!-- ==================== 1. STARTPAGINA ==================== -->
+    <div id="page-home" class="page active">
+      
+      <!-- CMS ARTIKELEN SECTIE -->
+      <div class="section-title">✨ Nieuwste CMS Publicaties</div>
+      <div id="cms-artikelen-grid" class="grid">
+        <p style="color: var(--text-muted);">Laden van artikelen uit het CMS...</p>
+      </div>
+
+      <!-- POPULAIR / MEEST BEKEKEN -->
+      <div class="section-title">🔥 Meest Bekeken</div>
+      <div class="grid">
+        <div class="card">
+          <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1513889961551-628c1e5e2ee9?w=600');"></div>
+          <div class="card-body">
+            <span class="badge">Pretparken</span>
+            <h3>Hoe worden darkrides 's nachts schoongemaakt?</h3>
+            <p>Een diepe duik achter de schermen van pretparken: wat gebeurt er zodra de lichten doven en de bezoekers weg zijn?</p>
+            <a href="#" class="btn">Lees Onderzoek</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- PRETPARKEN & DIERENTUINEN -->
+      <div class="section-title">🎢 Pretparken & Dierentuinen</div>
+      <div class="grid">
+        <div class="card">
+          <div class="card-body">
+            <span class="badge">Interview</span>
+            <h3>Achter de schermen bij de technische dienst</h3>
+            <p>We sproken met onderhoudstechnici over de vreemdste objecten die ze uit achtbanen hebben gevist.</p>
+            <a href="#" class="btn">Bekijk Artikel</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- GESCHIEDENIS VAN OBJECTEN -->
+      <div class="section-title">📜 Geschiedenis van Objecten</div>
+      <div class="grid">
+        <div class="card">
+          <div class="card-body">
+            <span class="badge">Historie</span>
+            <h3>Het ontstaan van de winkelwagen</h3>
+            <p>Hoe een simpele uitvinding met wieltjes de manier waarop de wereld winkelt voorgoed veranderde.</p>
+            <a href="#" class="btn">Bekijk Artikel</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ENQUÊTES & PUBLIEKSONDERZOEK -->
+      <div class="section-title">📊 Enquêtes & Resultaten</div>
+      <div class="grid">
+        <div class="card">
+          <div class="card-body">
+            <span class="badge badge-survey">🔴 Nu Actief</span>
+            <h3>Wat is het beste pretparkvoedsel van de Benelux?</h3>
+            <p>Laat je stem horen in onze nieuwste publieksenquête! Het invullen duurt slechts 1 minuut.</p>
+            <a href="https://forms.google.com" target="_blank" class="btn">Vul Enquête In ➔</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-body">
+            <span class="badge">Uitslag</span>
+            <h3>Hoe vaak bezoekt de gemiddelde Nederlander een dierentuin?</h3>
+            <p>De resultaten van onze enquête onder 500+ respondenten zijn bekend. Bekijk hier de grafieken.</p>
+            <a href="#" class="btn">Bekijk Uitslag</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- OVER ONDERZOCHT & FAQ -->
+      <div class="about-faq-box">
+        <h2>Over Onderzocht</h2>
+        <p style="color: var(--text-muted);">
+          <strong>Onderzocht</strong> is een onafhankelijk platform voor diepgaande onderzoeken, historische weetjes en publieksenquêtes. Van het mysterie achter onderhoud in attractieparken tot de geschiedenis van alledaagse voorwerpen: wij zoeken het uit voor entertainment.
+        </p>
+
+        <div class="contact-links-box">
+          📌 <strong>Volg of bereik ons direct:</strong><br>
+          • Instagram: <a href="https://www.instagram.com/onderzocht_/" target="_blank" rel="noopener">@onderzocht_</a><br>
+          • E-mail: <a href="mailto:contact.onderzocht@gmail.com?subject=Inzending%20of%20Tip">contact.onderzocht@gmail.com</a>
+        </div>
+
+        <h3 style="margin-top: 2rem;">Veelgestelde Vragen (FAQ)</h3>
+
+        <details>
+          <summary>Hoe ga ik te werk?</summary>
+          <p>Ik raadpleeg openbare archieven, spreek met experts en benader bedrijven via officiële wegen om betrouwbare en amusante artikelen te schrijven.</p>
+        </details>
+
+        <details>
+          <summary>Hoe werken de enquêtes?</summary>
+          <p>Iedereen kan gratis meedoen via een simpele Google Form. Zodra de enquête sluit, verwerk ik de resultaten in een helder artikel met grafieken.</p>
+        </details>
+
+        <details>
+          <summary>Kan ik zelf een idee of tip insturen?</summary>
+          <p>Absoluut! Heb jij een brandende vraag over een pretpark of voorwerp? Stuur een DM via onze <a href="https://www.instagram.com/onderzocht_/" target="_blank" rel="noopener">Instagram (@onderzocht_)</a> of stuur een e-mail naar <a href="mailto:contact.onderzocht@gmail.com">contact.onderzocht@gmail.com</a>.</p>
+        </details>
+      </div>
+
     </div>
 
-    <div class="about-faq-box">
-      <h2>Over Onderzocht</h2>
-      <p style="color: var(--text-muted);">Onderzocht is een onafhankelijk platform voor diepgaande onderzoeken, historische weetjes en publieksenquêtes.</p>
-      
-      <h3>Veelgestelde Vragen (FAQ)</h3>
-      <details>
-        <summary>Hoe ga ik te werk?</summary>
-        <p>Ik raadpleeg openbare archieven, spreek met experts en benader bedrijven via officiële wegen.</p>
-      </details>
-      <details>
-        <summary>Kan ik een tip insturen?</summary>
-        <p>Ja! Stuur een mail naar contact.onderzocht@gmail.com of een DM op Instagram.</p>
-      </details>
+    <!-- ==================== 2. SEPARATE CATEGORIE PAGINA'S ==================== -->
+    <div id="page-pretparken" class="page">
+      <div class="section-title">🎢 Alle Artikelen: Pretparken & Dierentuinen</div>
+      <div class="grid">
+        <div class="card">
+          <div class="card-body">
+            <span class="badge">Pretparken</span>
+            <h3>Hoe worden darkrides 's nachts schoongemaakt?</h3>
+            <p>Gepubliceerd op: 10 Sep 2026</p>
+            <a href="#" class="btn">Lees Artikel</a>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <div id="page-historie" class="page">
+      <div class="section-title">📜 Alle Artikelen: Historie van Objecten</div>
+      <div class="grid">
+        <div class="card">
+          <div class="card-body">
+            <span class="badge">Historie</span>
+            <h3>Het ontstaan van de winkelwagen</h3>
+            <p>Hoe een winkelkarretje de wereld veranderde.</p>
+            <a href="#" class="btn">Lees Artikel</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="page-enquetes" class="page">
+      <div class="section-title">📊 Alle Enquêtes & Resultaten</div>
+      <div class="grid">
+        <div class="card">
+          <div class="card-body">
+            <span class="badge badge-survey">Actief</span>
+            <h3>Wat is het beste pretparkvoedsel van de Benelux?</h3>
+            <p>Vul onze openstaande Google Form in.</p>
+            <a href="https://forms.google.com" target="_blank" class="btn">Vul Enquête In ➔</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 
-  <!-- LEES MODAL VOOR ARTIKELEN -->
+  <!-- LEES MODAL VOOR CMS ARTIKELEN -->
   <div id="article-modal" class="modal">
     <div class="modal-content">
       <button class="close-btn" onclick="closeModal()">✕ Sluiten</button>
@@ -306,15 +495,30 @@
   </footer>
 
   <script>
+    // Pagina's wisselen
+    function showPage(pageName) {
+      const pages = document.querySelectorAll('.page');
+      pages.forEach(page => page.classList.remove('active'));
+
+      const buttons = document.querySelectorAll('.cat-btn');
+      buttons.forEach(btn => btn.classList.remove('active'));
+
+      document.getElementById('page-' + pageName).classList.add('active');
+      document.getElementById('btn-' + pageName).classList.add('active');
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // CMS Artikelen inladen
     const articlesMap = {};
 
     async function loadCMSArticles() {
-      const grid = document.getElementById('artikelen-grid');
+      const grid = document.getElementById('cms-artikelen-grid');
       try {
         const response = await fetch('https://api.github.com/repos/contactonderzocht-prog/onderzocht-echt-versie-ofzo/contents/content/artikelen');
         
         if (!response.ok) {
-          grid.innerHTML = '<p style="color: var(--text-muted);">Nog geen gepubliceerde artikelen gevonden.</p>';
+          grid.innerHTML = '<p style="color: var(--text-muted);">Nog geen gepubliceerde artikelen uit het CMS.</p>';
           return;
         }
 
@@ -334,7 +538,6 @@
             const summary = summaryMatch ? summaryMatch[1] : '';
             const category = categoryMatch ? categoryMatch[1] : 'Artikel';
 
-            // Verwijder Frontmatter (metadata bovenaan) voor de volledige tekst
             const bodyContent = content.replace(/^---[\s\S]*?---/, '');
             articlesMap[index] = { title, bodyContent };
 
@@ -352,7 +555,7 @@
           }
         }
       } catch (err) {
-        grid.innerHTML = '<p style="color: var(--text-muted);">Fout bij laden van artikelen.</p>';
+        grid.innerHTML = '<p style="color: var(--text-muted);">Geen CMS artikelen geladen.</p>';
       }
     }
 
@@ -384,5 +587,6 @@
       });
     }
   </script>
+
 </body>
 </html>
