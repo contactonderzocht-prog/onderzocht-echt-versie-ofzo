@@ -10,6 +10,8 @@
 
   <!-- Netlify Identity Widget -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <!-- Marked parser voor Markdown artikelen -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
   <style>
     :root {
@@ -97,6 +99,29 @@
       padding: 1.5rem 1rem;
     }
 
+    .notification-bar {
+      background: var(--card-bg);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      border-radius: 6px;
+      padding: 0.5rem 1rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+    }
+
+    .btn-notif-small {
+      background: var(--accent);
+      color: #000;
+      border: none;
+      padding: 0.3rem 0.7rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
     .section-title {
       font-size: 1.3rem;
       text-transform: uppercase;
@@ -146,18 +171,8 @@
       margin-bottom: 0.75rem;
     }
 
-    .card h3 {
-      margin: 0 0 0.5rem 0;
-      font-size: 1.1rem;
-      line-height: 1.3;
-    }
-
-    .card p {
-      color: var(--text-muted);
-      font-size: 0.9rem;
-      margin: 0 0 1rem 0;
-      flex-grow: 1;
-    }
+    .card h3 { margin: 0 0 0.5rem 0; font-size: 1.1rem; }
+    .card p { color: var(--text-muted); font-size: 0.9rem; margin: 0 0 1rem 0; flex-grow: 1; }
 
     .btn {
       display: inline-block;
@@ -169,10 +184,63 @@
       border-radius: 4px;
       font-size: 0.85rem;
       font-weight: 600;
+      cursor: pointer;
+      border: none;
       transition: background 0.2s;
     }
 
     .btn:hover { background: var(--accent); color: #000; }
+
+    /* POP-UP ARTIKEL LEZER */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      z-index: 2000;
+      overflow-y: auto;
+      padding: 2rem 1rem;
+    }
+
+    .modal-content {
+      background: var(--card-bg);
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem;
+      border-radius: 8px;
+      border: 1px solid var(--accent);
+      position: relative;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 1rem; right: 1rem;
+      background: var(--accent);
+      color: #000;
+      border: none;
+      font-weight: bold;
+      padding: 0.4rem 0.8rem;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .about-faq-box {
+      background: var(--card-bg);
+      border-radius: 8px;
+      padding: 2rem;
+      margin-top: 4rem;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    details {
+      background: rgba(15, 23, 42, 0.6);
+      margin-bottom: 0.75rem;
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    summary { font-weight: 700; color: var(--accent); cursor: pointer; }
 
     footer {
       text-align: center;
@@ -187,17 +255,49 @@
 <body>
 
   <header>
-    <div class="logo">ONDERZOCHT<span>.</span></div>
+    <div class="logo" onclick="window.location.reload()">ONDERZOCHT<span>.</span></div>
     <div class="social-links">
       <a href="https://www.instagram.com/onderzocht_/" target="_blank">📸 @onderzocht_</a>
       <a href="mailto:contact.onderzocht@gmail.com">✉️ E-mail</a>
     </div>
   </header>
 
+  <nav class="category-bar">
+    <button class="cat-btn active">🏠 Alle Onderzoeken</button>
+  </nav>
+
   <div class="container">
-    <div class="section-title">📜 Nieuwste Artikelen & Onderzoeken</div>
+    <div class="notification-bar">
+      <span>🔔 <strong>Meldingen:</strong> Ontvang een bericht bij nieuwe onderzoeken.</span>
+      <button class="btn-notif-small" onclick="alert('Meldingen ingeschakeld!')">Aanzetten</button>
+    </div>
+
+    <div class="section-title">📜 Gepubliceerde Artikelen</div>
     <div id="artikelen-grid" class="grid">
       <p style="color: var(--text-muted);">Artikelen laden uit het CMS...</p>
+    </div>
+
+    <div class="about-faq-box">
+      <h2>Over Onderzocht</h2>
+      <p style="color: var(--text-muted);">Onderzocht is een onafhankelijk platform voor diepgaande onderzoeken, historische weetjes en publieksenquêtes.</p>
+      
+      <h3>Veelgestelde Vragen (FAQ)</h3>
+      <details>
+        <summary>Hoe ga ik te werk?</summary>
+        <p>Ik raadpleeg openbare archieven, spreek met experts en benader bedrijven via officiële wegen.</p>
+      </details>
+      <details>
+        <summary>Kan ik een tip insturen?</summary>
+        <p>Ja! Stuur een mail naar contact.onderzocht@gmail.com of een DM op Instagram.</p>
+      </details>
+    </div>
+  </div>
+
+  <!-- LEES MODAL VOOR ARTIKELEN -->
+  <div id="article-modal" class="modal">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeModal()">✕ Sluiten</button>
+      <div id="modal-body">Laden...</div>
     </div>
   </div>
 
@@ -206,7 +306,8 @@
   </footer>
 
   <script>
-    // Haal gepubliceerde artikelen op via de GitHub API
+    const articlesMap = {};
+
     async function loadCMSArticles() {
       const grid = document.getElementById('artikelen-grid');
       try {
@@ -220,27 +321,30 @@
         const files = await response.json();
         grid.innerHTML = '';
 
-        for (const file of files) {
+        for (const [index, file] of files.entries()) {
           if (file.name.endsWith('.md')) {
             const rawRes = await fetch(file.download_url);
             const content = await rawRes.text();
 
-            // Lees Frontmatter uit Markdown
             const titleMatch = content.match(/title:\s*["']?(.*?)["']?\n/);
             const summaryMatch = content.match(/summary:\s*["']?(.*?)["']?\n/);
             const categoryMatch = content.match(/category:\s*["']?(.*?)["']?\n/);
 
             const title = titleMatch ? titleMatch[1] : 'Geen titel';
-            const summary = summaryMatch ? summaryMatch[1] : 'Geen samenvatting';
+            const summary = summaryMatch ? summaryMatch[1] : '';
             const category = categoryMatch ? categoryMatch[1] : 'Artikel';
+
+            // Verwijder Frontmatter (metadata bovenaan) voor de volledige tekst
+            const bodyContent = content.replace(/^---[\s\S]*?---/, '');
+            articlesMap[index] = { title, bodyContent };
 
             const cardHtml = `
               <div class="card">
                 <div class="card-body">
                   <span class="badge">${category}</span>
                   <h3>${title}</h3>
-                  <p>${summary}</p>
-                  <a href="${file.html_url}" target="_blank" class="btn">Bekijk op GitHub</a>
+                  <p>${summary || 'Klik hieronder om dit onderzoek te lezen.'}</p>
+                  <button class="btn" onclick="readArticle(${index})">Lees Artikel ➔</button>
                 </div>
               </div>
             `;
@@ -248,8 +352,24 @@
           }
         }
       } catch (err) {
-        grid.innerHTML = '<p style="color: var(--text-muted);">Er is een fout opgetreden bij het laden van de artikelen.</p>';
+        grid.innerHTML = '<p style="color: var(--text-muted);">Fout bij laden van artikelen.</p>';
       }
+    }
+
+    function readArticle(id) {
+      const article = articlesMap[id];
+      if (article) {
+        document.getElementById('modal-body').innerHTML = `
+          <h1 style="color: var(--accent); margin-top:0;">${article.title}</h1>
+          <hr style="border-color: rgba(255,255,255,0.1); margin-bottom: 1.5rem;">
+          <div>${marked.parse(article.bodyContent)}</div>
+        `;
+        document.getElementById('article-modal').style.display = 'block';
+      }
+    }
+
+    function closeModal() {
+      document.getElementById('article-modal').style.display = 'none';
     }
 
     loadCMSArticles();
