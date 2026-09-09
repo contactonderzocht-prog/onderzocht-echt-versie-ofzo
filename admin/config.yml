@@ -2,31 +2,23 @@ backend:
   name: git-gateway
   branch: main
 
-media_folder: "images"
-public_folder: "/images"
+media_folder: "images/uploads"
+public_folder: "/images/uploads"
 
 collections:
   - name: "artikelen"
-    label: "Artikelen & Onderzoeken"
+    label: "Artikelen & Enquêtes"
     folder: "content/artikelen"
     create: true
-    slug: "{{slug}}"
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     fields:
-      - { label: "Titel van het artikel", name: "title", widget: "string" }
-      - { label: "Categorie", name: "category", widget: "select", options: ["Pretparken & ZOO", "Historie"] }
-      - { label: "Plaatsing op site", name: "featured", widget: "select", options: ["Standaard artikel", "🔥 Meest Bekeken (Startpagina)", "✨ Nieuwste Onderzoek"] }
-      - { label: "Auteur / Datum", name: "date", widget: "datetime" }
-      - { label: "Afbeelding", name: "image", widget: "image", required: false }
-      - { label: "Korte samenvatting", name: "description", widget: "text" }
-      - { label: "Volledige tekst", name: "body", widget: "markdown" }
-
-  - name: "enquetes"
-    label: "Enquêtes & Links"
-    folder: "content/enquetes"
-    create: true
-    slug: "{{slug}}"
-    fields:
-      - { label: "Titel van de Enquête", name: "title", widget: "string" }
-      - { label: "Status", name: "status", widget: "select", options: ["🔴 Nu Actief", "🟢 Uitslag Bekend"] }
-      - { label: "Google Form / Uitslag Link", name: "link", widget: "string" }
-      - { label: "Korte beschrijving", name: "description", widget: "text" }
+      - { label: "Titel van het Artikel", name: "title", widget: "string" }
+      - { label: "Publicatiedatum", name: "date", widget: "datetime" }
+      - { 
+          label: "Categorie (Bepaalt de plaatsing op de homepage)", 
+          name: "category", 
+          widget: "select", 
+          options: ["Pretparken", "Geschiedenis van Objecten", "Enquête", "Algemeen"] 
+        }
+      - { label: "Korte Samenvatting", name: "summary", widget: "text", required: false }
+      - { label: "Volledige Inhoud (Markdown)", name: "body", widget: "markdown" }
