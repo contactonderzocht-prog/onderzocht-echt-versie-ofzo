@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Onderzocht | Pretparken, Historie & Enquêtes</title>
+  
+  <!-- WebApp / PWA Instellingen -->
+  <meta name="theme-color" content="#0f172a">
+  <meta name="mobile-web-app-capable" content="yes">
+
+  <style>
+    :root {
+      --bg-color: #0f172a;
+      --card-bg: #1e293b;
+      --accent: #f59e0b;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --badge-active: #22c55e;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text);
+      margin: 0;
+      padding: 0;
+      line-height: 1.5;
+    }
+
+    /* HEADER */
+    header {
+      background-color: rgba(30, 41, 59, 0.95);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 2px solid var(--accent);
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: var(--text);
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .logo span { color: var(--accent); }
+
+    .social-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-left: 1rem;
+      transition: color 0.2s;
+    }
+
+    .social-links a:hover {
+      color: var(--accent);
+    }
+
+    /* CATEGORIEËN NAVIGATIEBALK */
+    .category-bar {
+      background: #1a2332;
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1rem;
+      overflow-x: auto;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .cat-btn {
+      color: var(--text);
+      border: none;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 0.4rem 0.9rem;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .cat-btn:hover, .cat-btn.active {
+      background: var(--accent);
+      color: #000;
+    }
+
+    .container {
+      max-width: 1050px;
+      margin: 0 auto;
+      padding: 1.5rem 1rem;
+    }
+
+    /* COMPACTE MELDINGSBALK */
+    .notification-bar {
+      background: var(--card-bg);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      border-radius: 6px;
+      padding: 0.5rem 1rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+    }
+
+    .btn-notif-small {
+      background: var(--accent);
+      color: #000;
+      border: none;
+      padding: 0.3rem 0.7rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    /* TITELS EN RASTER */
+    .section-title {
+      font-size: 1.3rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-left: 4px solid var(--accent);
+      padding-left: 0.75rem;
+      margin: 2.5rem 0 1.25rem 0;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent);
+    }
+
+    .card-img {
+      width: 100%;
+      height: 180px;
+      background-color: #334155;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .card-body {
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .badge {
+      align-self: flex-start;
+      background: var(--accent);
+      color: #000;
+      font-size: 0.7rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      margin-bottom: 0.75rem;
+    }
+
+    .badge-survey { background: var(--badge-active); color: #fff; }
+
+    .card h3 {
+      margin: 0 0 0.5rem 0;
+      font-size: 1.1rem;
+      line-height: 1.3;
+    }
+
+    .card p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin: 0 0 1rem 0;
+      flex-grow: 1;
+    }
+
+    .btn {
+      display: inline-block;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text);
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+
+    .btn:hover { background: var(--accent); color: #000; }
+
+    /* OVER & FAQ SECTIE */
+    .about-faq-box {
+      background: var(--card-bg);
+      border-radius: 8px;
+      padding: 2rem;
+      margin-top: 4rem;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .contact-links-box {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      background: rgba(15, 23, 42, 0.6);
+      border-radius: 6px;
+      border: 1px solid rgba(245, 158, 11, 0.2);
+    }
+
+    .contact-links-box a {
+      color: var(--accent);
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    details {
+      background: rgba(15, 23, 42, 0.6);
+      margin-bottom: 0.75rem;
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    summary {
+      font-weight: 700;
+      color: var(--accent);
+      cursor: pointer;
+    }
+
+    details p {
+      margin: 0.75rem 0 0 0;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    /* PAGINA'S WISSELEN */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      margin-top: 4rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER MET JOUW ECHTE LINKS -->
+  <header>
+    <div class="logo" onclick="showPage('home')">ONDERZOCHT<span>.</span></div>
+    <div class="social-links">
+      <a href="https://www.instagram.com/onderzocht_/" target="_blank" rel="noopener">📸 @onderzocht_</a>
+      <a href="mailto:contact.onderzocht@gmail.com?subject=Vraag%20of%20Tip%20voor%20Onderzocht">✉️ E-mail</a>
+    </div>
+  </header>
+
+  <!-- CATEGORIEËN NAVIGATIEBALK -->
+  <nav class="category-bar">
+    <button class="cat-btn active" id="btn-home" onclick="showPage('home')">🏠 Startpagina</button>
+    <button class="cat-btn" id="btn-pretparken" onclick="showPage('pretparken')">🎢 Pretparken & ZOO</button>
+    <button class="cat-btn" id="btn-historie" onclick="showPage('historie')">📜 Historie</button>
+    <button class="cat-btn" id="btn-enquetes" onclick="showPage('enquetes')">📊 Enquêtes</button>
+  </nav>
+
+  <div class="container">
+
+    <!-- SUBTIELE KLEINE MELDINGSBALK -->
+    <div class="notification-bar">
+      <span>🔔 <strong>Meldingen:</strong> Ontvang een bericht bij nieuwe onderzoeken.</span>
+      <button class="btn-notif-small" onclick="alert('Meldingen ingeschakeld!')">Aanzetten</button>
+    </div>
+
+    <!-- ==================== 1. STARTPAGINA ==================== -->
+    <div id="page-home" class="page active">
+      
+      <!-- POPULAIR / MEEST BEKEKEN -->
+      <div class="section-title">🔥 Meest Bekeken</div>
+      <div class="grid">
+        <div class="card">
+          <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1513889961551-628c1e5e2ee9?w=600');"></div>
+          <div class="card-body">
+            <span class="badge">Pretparken</span>
+            <h3>Hoe worden darkrides 's nachts schoongemaakt?</h3>
+            <p>Een diepe duik achter de schermen van pretparken: wat gebeurt er zodra de lichten doven en de bezoekers weg zijn?</p>
+            <a href="#" class="btn">Lees Onderzoek</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- PRETPARKEN & DIERENTUINEN -->
+      <div class="section-title">🎢 Pretparken & Dierentuinen</div>
+      <div class="grid">
+        <div class="card">
+          <div class="card-body">
+            <span class="badge">Interview</span>
+            <h3>Achter de schermen bij de technische dienst</h3>
+            <p>We sproken met onderhoudstechnici over de vreemdste objecten die ze uit achtbanen hebben gevist.</p>
+            <a href="#" class="btn">Bekijk Artikel</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- GESCHIEDENIS VAN OBJECTEN -->
+      <div class="section-title">📜 Geschiedenis van Objecten</div>
+      <div class="grid">
+        <div class="card">
+          <div class="card-body">
+            <span class="badge">Historie</span>
+            <h3>Het ontstaan van de winkelwagen</h3>
+            <p>Hoe een simpele uitvinding met wieltjes de manier waarop de wereld winkelt voorgoed veranderde.</p>
+            <a href="#" class="btn">Bekijk Artikel</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ENQUÊTES & PUBLIEKSONDERZOEK -->
+      <div class="section-title">📊 Enquêtes & Resultaten</div>
+      <div class="grid">
+        <div class="card">
+          <div class="card-body">
+            <span class="badge badge-survey">🔴 Nu Actief</span>
+            <h3>Wat is het beste pretparkvoedsel van de Benelux?</h3>
+            <p>Laat je stem horen in onze nieuwste publieksenquête! Het invullen duurt slechts 1 minuut.</p>
+            <a href="https://forms.google.com" target="_blank" class="btn">Vul Enquête In ➔</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-body">
+            <span class="badge">Uitslag</span>
+            <h3>Hoe vaak bezoekt de gemiddelde Nederlander een dierentuin?</h3>
+            <p>De resultaten van onze enquête onder 500+ respondenten zijn bekend. Bekijk hier de grafieken.</p>
+            <a href="#" class="btn">Bekijk Uitslag</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- OVER ONDERZOCHT & FAQ -->
+      <div class="about-faq-box">
+        <h2>Over Onderzocht</h2>
+        <p style="color: var(--text-muted);">
+          <strong>Onderzocht</strong> is een onafhankelijk platform voor diepgaande onderzoeken, historische weetjes en publieksenquêtes. Van het mysterie achter onderhoud in attractieparken tot de geschiedenis van alledaagse voorwerpen: wij zoeken het uit voor entertainment.
+        </p>
+
+        <!-- KANELEN / CONTACT BOKS -->
+        <div class="contact-links-box">
+          📌 <strong>Volg of bereik ons direct:</strong><br>
+          • Instagram: <a href="https://www.instagram.com/onderzocht_/" target="_blank" rel="noopener">@onderzocht_</a><br>
+          • E-mail: <a href="mailto:contact.onderzocht@gmail.com?subject=Inzending%20of%20Tip">contact.onderzocht@gmail.com</a>
+        </div>
+
+        <h3 style="margin-top: 2rem;">Veelgestelde Vragen (FAQ)</h3>
+
+        <details>
+          <summary>Hoe ga ik te werk?</summary>
+          <p>Ik raadpleeg openbare archieven, spreek met experts en benader bedrijven via officiële wegen om betrouwbare en amusante artikelen te schrijven.</p>
+        </details>
+
+        <details>
+          <summary>Hoe werken de enquêtes?</summary>
+          <p>Iedereen kan gratis meedoen via een simpele Google Form. Zodra de enquête sluit, verwerk ik de resultaten in een helder artikel met grafieken.</p>
+        </details>
+
+        <details>
+          <summary>Kan ik zelf een idee of tip insturen?</summary>
+          <p>Absoluut! Heb jij een brandende vraag over een pretpark of voorwerp? Stuur een DM via onze <a href="https://www.instagram.com/onderzocht_/" target="_blank" rel="noopener">Instagram (@onderzocht_)</a> of stuur een e-mail naar <a href="mailto:contact.onderzocht@gmail.com">contact.onderzocht@gmail.com</a>.</p>
+        </details>
+      </div>
+
+    </div>
+
+    <!-- ==================== 2. SEPARATE CATEGORIE PAGINA'S ==================== -->
+    <div id="page-pretparken" class="page">
+      <div class="section-title">🎢 Alle Artikelen: Pretparken & Dierentuinen</div>
+      <div class="grid">
+        <div class="card">
+          <div class="card-body">
+            <span class="badge">Pretparken</span>
+            <h3>Hoe worden darkrides 's nachts schoongemaakt?</h3>
+            <p>Gepubliceerd op: 10 Sep 2026</p>
+            <a href="#" class="btn">Lees Artikel</a>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <span class="badge">Interview</span>
+            <h3>Achter de schermen bij de technische dienst</h3>
+            <p>De vreemdste spullen die uit achtbanen zijn gehaald.</p>
+            <a href="#" class="btn">Lees Artikel</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="page-historie" class="page">
+      <div class="section-title">📜 Alle Artikelen: Historie van Objecten</div>
+      <div class="grid">
+        <div class="card">
+          <div class="card-body">
+            <span class="badge">Historie</span>
+            <h3>Het ontstaan van de winkelwagen</h3>
+            <p>Hoe een winkelkarretje de wereld veranderde.</p>
+            <a href="#" class="btn">Lees Artikel</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="page-enquetes" class="page">
+      <div class="section-title">📊 Alle Enquêtes & Resultaten</div>
+      <div class="grid">
+        <div class="card">
+          <div class="card-body">
+            <span class="badge badge-survey">Actief</span>
+            <h3>Wat is het beste pretparkvoedsel van de Benelux?</h3>
+            <p>Vul onze openstaande Google Form in.</p>
+            <a href="https://forms.google.com" target="_blank" class="btn">Vul Enquête In ➔</a>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <span class="badge">Uitslag</span>
+            <h3>Hoe vaak bezoekt de Nederlander een dierentuin?</h3>
+            <p>Bekijk de resultaten van het onderzoek.</p>
+            <a href="#" class="btn">Bekijk Uitslag</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    &copy; Onderzocht - Alle rechten voorbehouden.
+  </footer>
+
+  <!-- JAVASCRIPT VOOR HET SCHAKELEN TUSSEN CATEGORIEËN -->
+  <script>
+    function showPage(pageName) {
+      const pages = document.querySelectorAll('.page');
+      pages.forEach(page => page.classList.remove('active'));
+
+      const buttons = document.querySelectorAll('.cat-btn');
+      buttons.forEach(btn => btn.classList.remove('active'));
+
+      document.getElementById('page-' + pageName).classList.add('active');
+      document.getElementById('btn-' + pageName).classList.add('active');
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  </script>
+
+</body>
+</html>
