@@ -20,5 +20,6 @@ collections:
           widget: "select", 
           options: ["Pretparken", "Geschiedenis van Objecten", "Enquête", "Algemeen"] 
         }
+      - { label: "Kopfoto / Afbeelding", name: "image", widget: "image", required: false }
       - { label: "Korte Samenvatting", name: "summary", widget: "text", required: false }
       - { label: "Volledige Inhoud (Markdown)", name: "body", widget: "markdown" }
