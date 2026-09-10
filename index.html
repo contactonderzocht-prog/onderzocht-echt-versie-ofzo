@@ -42,7 +42,6 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    /* HEADER MOBIEL VRIENDELIJK */
     header {
       background-color: rgba(30, 41, 59, 0.95);
       position: sticky;
@@ -80,7 +79,6 @@
 
     .social-links a:hover { color: var(--accent); }
 
-    /* CATEGORIEËN NAVIGATIEBALK (SCROLLBAAR OP GSM) */
     .category-bar {
       background: #1a2332;
       display: flex;
@@ -119,7 +117,6 @@
       padding: 1rem;
     }
 
-    /* APP INSTALLEREN MELDINGSBALK */
     .app-install-bar {
       display: none;
       background: linear-gradient(90deg, #1e293b, #334155);
@@ -132,7 +129,6 @@
       font-size: 0.85rem;
     }
 
-    /* COMPACTE MELDINGSBALK */
     .notification-bar {
       background: var(--card-bg);
       border: 1px solid rgba(245, 158, 11, 0.3);
@@ -159,7 +155,6 @@
       flex-shrink: 0;
     }
 
-    /* TITELS EN RASTER MET MOBIELE OPTIMALISATIE */
     .section-title {
       font-size: 1.2rem;
       text-transform: uppercase;
@@ -257,6 +252,8 @@
     }
 
     .btn:hover { background: var(--accent); color: #000; }
+    .btn-survey-action { background: var(--badge-active); color: #fff; }
+    .btn-survey-action:hover { background: #16a34a; color: #fff; }
 
     .empty-msg {
       color: var(--text-muted);
@@ -265,7 +262,6 @@
       padding: 0.5rem 0;
     }
 
-    /* OVER & FAQ SECTIE MOBIEL GEOPTIMALISEERD */
     .about-faq-box {
       background: var(--card-bg);
       border-radius: 8px;
@@ -310,11 +306,9 @@
       color: var(--text-muted);
     }
 
-    /* PAGINA'S WISSELEN */
     .page { display: none; }
     .page.active { display: block; }
 
-    /* LEES MODAL VOOR ARTIKELEN EN FOTO'S */
     .modal {
       display: none;
       position: fixed;
@@ -386,103 +380,77 @@
 
   <div class="container">
 
-    <!-- APP INSTALLEREN MELDING (VERSCHIJNT BIJ ONDERSTEUNING) -->
     <div id="app-install-bar" class="app-install-bar">
       <span>📲 <strong>Installeer als App:</strong> Voeg Onderzocht toe aan je startscherm!</span>
       <button class="btn-notif-small" id="btn-install-app">Installeer</button>
     </div>
 
-    <!-- SUBTIELE MELDINGSBALK -->
     <div class="notification-bar">
       <span>🔔 <strong>Meldingen:</strong> Ontvang een bericht bij nieuwe onderzoeken.</span>
       <button class="btn-notif-small" onclick="alert('Meldingen ingeschakeld!')">Aanzetten</button>
     </div>
 
-    <!-- ==================== 1. STARTPAGINA ==================== -->
+    <!-- STARTPAGINA -->
     <div id="page-home" class="page active">
-      
       <div class="section-title">✨ Nieuwste Artikelen</div>
-      <div id="grid-nieuwste" class="grid">
-        <p class="empty-msg">Nog geen artikelen gepubliceerd.</p>
-      </div>
+      <div id="grid-nieuwste" class="grid"><p class="empty-msg">Nog geen artikelen gepubliceerd.</p></div>
 
       <div class="section-title">🔥 Meest Bekeken</div>
-      <div id="grid-meest-bekeken" class="grid">
-        <p class="empty-msg">Nog geen artikelen om weer te geven.</p>
-      </div>
+      <div id="grid-meest-bekeken" class="grid"><p class="empty-msg">Nog geen artikelen om weer te geven.</p></div>
 
       <div class="section-title">🎢 Pretparken</div>
-      <div id="grid-pretparken" class="grid">
-        <p class="empty-msg">Nog geen artikelen in deze categorie.</p>
-      </div>
+      <div id="grid-pretparken" class="grid"><p class="empty-msg">Nog geen artikelen in deze categorie.</p></div>
 
       <div class="section-title">📜 Geschiedenis van Objecten</div>
-      <div id="grid-historie" class="grid">
-        <p class="empty-msg">Nog geen artikelen in deze categorie.</p>
-      </div>
+      <div id="grid-historie" class="grid"><p class="empty-msg">Nog geen artikelen in deze categorie.</p></div>
 
       <div class="section-title">📊 Enquêtes & Resultaten</div>
-      <div id="grid-enquetes" class="grid">
-        <p class="empty-msg">Nog geen enquêtes gepubliceerd.</p>
-      </div>
+      <div id="grid-enquetes" class="grid"><p class="empty-msg">Nog geen enquêtes gepubliceerd.</p></div>
 
       <div class="about-faq-box">
         <h2>Over Onderzocht</h2>
         <p style="color: var(--text-muted);">
           <strong>Onderzocht</strong> is een onafhankelijk platform voor diepgaande onderzoeken, historische weetjes en publieksenquêtes.
         </p>
-
         <div class="contact-links-box">
           📌 <strong>Volg of bereik ons direct:</strong><br>
           • Instagram: <a href="https://www.instagram.com/onderzocht_/" target="_blank" rel="noopener">@onderzocht_</a><br>
           • E-mail: <a href="mailto:contact.onderzocht@gmail.com">contact.onderzocht@gmail.com</a>
         </div>
-
         <h3 style="margin-top: 1.5rem;">Veelgestelde Vragen (FAQ)</h3>
-
         <details>
           <summary>Hoe ga ik te werk?</summary>
           <p>Ik raadpleeg openbare archieven, spreek met experts en benader bedrijven via officiële wegen om betrouwbare en amusante artikelen te schrijven.</p>
         </details>
-
         <details>
           <summary>Hoe werken de enquêtes?</summary>
           <p>Iedereen kan gratis meedoen via een simpele Google Form. Zodra de enquête sluit, verwerk ik de resultaten in een helder artikel met grafieken.</p>
         </details>
-
         <details>
           <summary>Kan ik zelf een idee of tip insturen?</summary>
           <p>Absoluut! Stuur een DM via onze <a href="https://www.instagram.com/onderzocht_/" target="_blank" rel="noopener">Instagram (@onderzocht_)</a> of stuur een e-mail naar <a href="mailto:contact.onderzocht@gmail.com">contact.onderzocht@gmail.com</a>.</p>
         </details>
       </div>
-
     </div>
 
-    <!-- ==================== 2. SEPARATE CATEGORIE PAGINA'S ==================== -->
+    <!-- SEPARATE PAGINA'S -->
     <div id="page-pretparken" class="page">
       <div class="section-title">🎢 Alle Artikelen: Pretparken</div>
-      <div id="grid-cat-pretparken" class="grid">
-        <p class="empty-msg">Geen artikelen in de categorie Pretparken.</p>
-      </div>
+      <div id="grid-cat-pretparken" class="grid"><p class="empty-msg">Geen artikelen in de categorie Pretparken.</p></div>
     </div>
 
     <div id="page-historie" class="page">
       <div class="section-title">📜 Alle Artikelen: Historie van Objecten</div>
-      <div id="grid-cat-historie" class="grid">
-        <p class="empty-msg">Geen artikelen in de categorie Historie.</p>
-      </div>
+      <div id="grid-cat-historie" class="grid"><p class="empty-msg">Geen artikelen in de categorie Historie.</p></div>
     </div>
 
     <div id="page-enquetes" class="page">
       <div class="section-title">📊 Alle Enquêtes & Resultaten</div>
-      <div id="grid-cat-enquetes" class="grid">
-        <p class="empty-msg">Geen enquêtes of uitslagen aanwezig.</p>
-      </div>
+      <div id="grid-cat-enquetes" class="grid"><p class="empty-msg">Geen enquêtes of uitslagen aanwezig.</p></div>
     </div>
 
   </div>
 
-  <!-- LEES MODAL VOOR ARTIKELEN -->
   <div id="article-modal" class="modal">
     <div class="modal-content">
       <button class="close-btn" onclick="closeModal()">✕ Sluiten</button>
@@ -495,7 +463,6 @@
   </footer>
 
   <script>
-    // GENERERING APP MANIFEST
     const manifestContent = {
       name: "Onderzocht",
       short_name: "Onderzocht",
@@ -503,18 +470,13 @@
       display: "standalone",
       background_color: "#0f172a",
       theme_color: "#0f172a",
-      icons: [{
-        src: "https://images.unsplash.com/photo-1513889961551-628c1e5e2ee9?w=512",
-        sizes: "512x512",
-        type: "image/png"
-      }]
+      icons: [{ src: "https://images.unsplash.com/photo-1513889961551-628c1e5e2ee9?w=512", sizes: "512x512", type: "image/png" }]
     };
     const stringManifest = JSON.stringify(manifestContent);
     const blob = new Blob([stringManifest], {type: 'application/json'});
     const manifestURL = URL.createObjectURL(blob);
     document.getElementById('manifest-placeholder').setAttribute('href', manifestURL);
 
-    // APP INSTALLATIE LOGICA
     let deferredPrompt;
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
@@ -554,7 +516,6 @@
       try {
         const repoUrl = 'https://api.github.com/repos/contactonderzocht-prog/onderzocht-echt-versie-ofzo/contents/content';
         
-        // Haal artikelen EN enquêtes op uit beide mappen
         const [resArtikelen, resEnquetes] = await Promise.all([
           fetch(`${repoUrl}/artikelen`).catch(() => null),
           fetch(`${repoUrl}/enquetes`).catch(() => null)
@@ -589,6 +550,7 @@
             const summaryMatch = content.match(/summary:\s*["']?(.*?)["']?\n/);
             const categoryMatch = content.match(/category:\s*["']?(.*?)["']?\n/);
             const imageMatch = content.match(/image:\s*["']?(.*?)["']?\n/);
+            const surveyLinkMatch = content.match(/survey_link:\s*["']?(.*?)["']?\n/);
 
             const title = titleMatch ? titleMatch[1] : 'Geen titel';
             const summary = summaryMatch ? summaryMatch[1] : '';
@@ -596,6 +558,7 @@
             if (file.isEnqueteFolder) category = 'Enquête';
 
             const image = imageMatch ? imageMatch[1] : '';
+            const surveyLink = surveyLinkMatch ? surveyLinkMatch[1].trim() : '';
 
             const bodyContent = content.replace(/^---[\s\S]*?---/, '');
             articlesMap[index] = { title, image, bodyContent };
@@ -605,14 +568,20 @@
 
             const imageHtml = image ? `<div class="card-img-container"><img src="${image}" alt="${title}"></div>` : '';
 
+            // ALS ER EEN FORMULIERLINK IS, WORDT HET EEN DIRECTE KNOP, ANDERS LEES ARTIKEL
+            let actionBtn = `<button class="btn" onclick="readArticle(${index})">Lees Artikel ➔</button>`;
+            if (surveyLink && surveyLink !== '') {
+              actionBtn = `<a href="${surveyLink}" target="_blank" class="btn btn-survey-action">📝 Enquête Invullen ➔</a>`;
+            }
+
             const cardHtml = `
               <div class="card">
                 ${imageHtml}
                 <div class="card-body">
                   <span class="${badgeClass}">${category}</span>
                   <h3>${title}</h3>
-                  <p>${summary || 'Klik hieronder om te bekijken.'}</p>
-                  <button class="btn" onclick="readArticle(${index})">Lees Artikel ➔</button>
+                  <p>${summary || 'Klik hieronder om me te doen.'}</p>
+                  ${actionBtn}
                 </div>
               </div>
             `;
