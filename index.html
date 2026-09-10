@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Onderzocht | Pretparken, Historie & Enquêtes</title>
   
-  <!-- APP / PWA INSTELINGEN -->
+  <!-- APP / PWA INSTELLINGEN -->
   <meta name="theme-color" content="#0f172a">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -552,12 +552,22 @@
 
     async function loadCMSArticles() {
       try {
-        const response = await fetch('https://api.github.com/repos/contactonderzocht-prog/onderzocht-echt-versie-ofzo/contents/content/artikelen');
+        const repoUrl = 'https://api.github.com/repos/contactonderzocht-prog/onderzocht-echt-versie-ofzo/contents/content';
         
-        if (!response.ok) return;
+        // Haal artikelen EN enquêtes op uit beide mappen
+        const [resArtikelen, resEnquetes] = await Promise.all([
+          fetch(`${repoUrl}/artikelen`).catch(() => null),
+          fetch(`${repoUrl}/enquetes`).catch(() => null)
+        ]);
 
-        const files = await response.json();
-        
+        let filesArtikelen = resArtikelen && resArtikelen.ok ? await resArtikelen.json() : [];
+        let filesEnquetes = resEnquetes && resEnquetes.ok ? await resEnquetes.json() : [];
+
+        filesArtikelen = filesArtikelen.map(f => ({ ...f, isEnqueteFolder: false }));
+        filesEnquetes = filesEnquetes.map(f => ({ ...f, isEnqueteFolder: true }));
+
+        const allFiles = [...filesArtikelen, ...filesEnquetes];
+
         const gridNieuwste = document.getElementById('grid-nieuwste');
         const gridMeestBekeken = document.getElementById('grid-meest-bekeken');
         const gridPretparken = document.getElementById('grid-pretparken');
@@ -570,7 +580,7 @@
 
         let countNieuwste = 0, countPretparken = 0, countHistorie = 0, countEnquetes = 0;
 
-        for (const [index, file] of files.entries()) {
+        for (const [index, file] of allFiles.entries()) {
           if (file.name.endsWith('.md')) {
             const rawRes = await fetch(file.download_url);
             const content = await rawRes.text();
@@ -582,13 +592,15 @@
 
             const title = titleMatch ? titleMatch[1] : 'Geen titel';
             const summary = summaryMatch ? summaryMatch[1] : '';
-            const category = categoryMatch ? categoryMatch[1] : 'Algemeen';
+            let category = categoryMatch ? categoryMatch[1] : 'Algemeen';
+            if (file.isEnqueteFolder) category = 'Enquête';
+
             const image = imageMatch ? imageMatch[1] : '';
 
             const bodyContent = content.replace(/^---[\s\S]*?---/, '');
             articlesMap[index] = { title, image, bodyContent };
 
-            const isSurvey = category.toLowerCase().includes('enquête') || category.toLowerCase().includes('enquete');
+            const isSurvey = file.isEnqueteFolder || category.toLowerCase().includes('enquête') || category.toLowerCase().includes('enquete');
             const badgeClass = isSurvey ? 'badge badge-survey' : 'badge';
 
             const imageHtml = image ? `<div class="card-img-container"><img src="${image}" alt="${title}"></div>` : '';
@@ -614,7 +626,15 @@
             }
 
             const catLower = category.toLowerCase();
-            if (catLower.includes('pretpark')) {
+            if (isSurvey) {
+              if (countEnquetes === 0) {
+                gridEnquetes.innerHTML = '';
+                gridCatEnquetes.innerHTML = '';
+              }
+              gridEnquetes.innerHTML += cardHtml;
+              gridCatEnquetes.innerHTML += cardHtml;
+              countEnquetes++;
+            } else if (catLower.includes('pretpark')) {
               if (countPretparken === 0) {
                 gridPretparken.innerHTML = '';
                 gridCatPretparken.innerHTML = '';
@@ -630,14 +650,6 @@
               gridHistorie.innerHTML += cardHtml;
               gridCatHistorie.innerHTML += cardHtml;
               countHistorie++;
-            } else if (isSurvey) {
-              if (countEnquetes === 0) {
-                gridEnquetes.innerHTML = '';
-                gridCatEnquetes.innerHTML = '';
-              }
-              gridEnquetes.innerHTML += cardHtml;
-              gridCatEnquetes.innerHTML += cardHtml;
-              countEnquetes++;
             }
           }
         }
