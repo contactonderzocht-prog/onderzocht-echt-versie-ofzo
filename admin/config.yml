@@ -32,6 +32,7 @@ collections:
     fields:
       - { label: "Titel van de Enquête", name: "title", widget: "string" }
       - { label: "Publicatiedatum", name: "date", widget: "datetime" }
+      - { label: "Link naar Enquête / Formulier", name: "survey_link", widget: "string", required: false, hint: "Plak hier direct de link van bijvoorbeeld je Google Form" }
       - { label: "Kopfoto / Afbeelding", name: "image", widget: "image", required: false }
       - { label: "Korte Samenvatting", name: "summary", widget: "text", required: false }
-      - { label: "Volledige Inhoud (Markdown)", name: "body", widget: "markdown" }
+      - { label: "Volledige Inhoud / Toelichting", name: "body", widget: "markdown", required: false }
