@@ -2,6 +2,7 @@
 title: "De Kracht van de Launch: Wat kost één lancering van een achtbaan?"
 date: 2026-09-21T21:43:00.000+02:00
 category: Pretparken
+image: /images/uploads/kingda_ka_train_on_launch_1.jpg.webp
 summary: "Binnen een fractie van een seconde van 0 naar 100 km/u worden
   gekatapulteerd: lanceerachtbanen horen bij de populairste attracties ter
   wereld. Maar hoeveel stroom gebruikt zo'n gigant eigenlijk tijdens het
