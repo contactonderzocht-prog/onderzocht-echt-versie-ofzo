@@ -10,29 +10,23 @@ collections:
     label: "Artikelen"
     folder: "content/artikelen"
     create: true
-    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    slug: "{{slug}}"
     fields:
-      - { label: "Titel van het Artikel", name: "title", widget: "string" }
-      - { label: "Publicatiedatum", name: "date", widget: "datetime" }
-      - { 
-          label: "Categorie", 
-          name: "category", 
-          widget: "select", 
-          options: ["Pretparken", "Geschiedenis van Objecten", "Algemeen"] 
-        }
-      - { label: "Kopfoto / Afbeelding", name: "image", widget: "image", required: false }
-      - { label: "Korte Samenvatting", name: "summary", widget: "text", required: false }
-      - { label: "Volledige Inhoud (Markdown)", name: "body", widget: "markdown" }
+      - {label: "Titel", name: "title", widget: "string"}
+      - {label: "Publicatiedatum", name: "date", widget: "datetime"}
+      - {label: "Kopfoto", name: "featured_image", widget: "image", required: false}
+      - {label: "Korte Samenvatting", name: "summary", widget: "text"}
+      - {label: "Inhoud", name: "body", widget: "markdown"}
 
   - name: "enquetes"
-    label: "Enquêtes & Links"
+    label: "Enquêtes"
     folder: "content/enquetes"
     create: true
-    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    slug: "{{slug}}"
     fields:
-      - { label: "Titel van de Enquête", name: "title", widget: "string" }
-      - { label: "Publicatiedatum", name: "date", widget: "datetime" }
-      - { label: "Link naar Enquête / Formulier", name: "survey_link", widget: "string", required: false, hint: "Plak hier direct de link van bijvoorbeeld je Google Form" }
-      - { label: "Kopfoto / Afbeelding", name: "image", widget: "image", required: false }
-      - { label: "Korte Samenvatting", name: "summary", widget: "text", required: false }
-      - { label: "Volledige Inhoud / Toelichting", name: "body", widget: "markdown", required: false }
+      - {label: "Titel", name: "title", widget: "string"}
+      - {label: "Publicatiedatum", name: "date", widget: "datetime"}
+      - {label: "Kopfoto", name: "featured_image", widget: "image", required: false}
+      - {label: "Directe Enquête Link (bijv. Google Forms)", name: "survey_link", widget: "string", required: false}
+      - {label: "Korte Samenvatting", name: "summary", widget: "text"}
+      - {label: "Toelichting / Inhoud", name: "body", widget: "markdown"}
