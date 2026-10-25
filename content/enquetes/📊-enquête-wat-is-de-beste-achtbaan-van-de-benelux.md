@@ -1,12 +1,13 @@
 ---
 title: "📊 Enquête: Wat is de beste achtbaan van de Benelux?"
-status: 🔴 Nu Actief
-link: https://forms.gle/7ww1GeQW4PM4Nv748
-description: Vul hier zo precies mogelijk de achtbaan in die jij het best vind.
-date: 2026-09-10T20:00:00.000+02:00
-image: /images/uploads/1024x576-baron-1898-1.jpg
+date: 2026-10-25T23:00:00.000+01:00
 summary: Wat is jouw ultieme favoriet? Laat je stem horen in onze nieuwste
   publieksenquête en help mee om de beste achtbaan van de Benelux te bepalen!
+status: 🔴 Nu Actief
+link: https://forms.gle/7ww1GeQW4PM4Nv748
+image: /images/uploads/1024x576-baron-1898-1.jpg
+description: Vul hier zo precies mogelijk de achtbaan in die jij het best vind.
+survey_link: https://docs.google.com/forms/d/e/1FAIpQLSdvl1aQySTGcuNeNwPRTq4icDDNMB1yEpi_xr9977yij-rRYA/viewform?usp=header
 ---
 Pretparkliefhebbers opgelet! De Benelux staat bekend om een aantal fantastische achtbanen. Van razendsnelle lanceringen en spectaculaire mappen tot houten klassiekers en adembenemende inversies. Maar welke achtbaan steekt er nu écht met kop en schouders bovenuit?
 
