@@ -560,12 +560,12 @@
             const rawRes = await fetch(file.download_url);
             const content = await rawRes.text();
 
-            const titleMatch = content.match(/title:\s*["']?(.*?)["']?\n/);
-            const summaryMatch = content.match(/summary:\s*["']?(.*?)["']?\n/);
-            const categoryMatch = content.match(/category:\s*["']?(.*?)["']?\n/);
-            // Ondersteunt zowel 'image' als 'featured_image' vanuit Decap CMS
-            const imageMatch = content.match(/(?:image|featured_image):\s*["']?(.*?)["']?\n/);
-            const surveyLinkMatch = content.match(/survey_link:\s*["']?(.*?)["']?\n/);
+            const titleMatch = content.match(/title:\s*["']?(.*?)["']?(?:\n|\r)/);
+            const summaryMatch = content.match(/summary:\s*["']?(.*?)["']?(?:\n|\r)/);
+            const categoryMatch = content.match(/category:\s*["']?(.*?)["']?(?:\n|\r)/);
+            const imageMatch = content.match(/(?:image|featured_image):\s*["']?(.*?)["']?(?:\n|\r)/);
+            // Flexibelere match voor survey_link:
+            const surveyLinkMatch = content.match(/survey_link:\s*["']?(.*?)["']?(?:\n|\r)/);
 
             const title = titleMatch ? titleMatch[1] : 'Geen titel';
             const summary = summaryMatch ? summaryMatch[1] : '';
@@ -576,7 +576,7 @@
             const surveyLink = surveyLinkMatch ? surveyLinkMatch[1].trim() : '';
 
             const bodyContent = content.replace(/^---[\s\S]*?---/, '');
-            articlesMap[index] = { title, image, bodyContent };
+            articlesMap[index] = { title, image, bodyContent, surveyLink };
 
             const isSurvey = file.isEnqueteFolder || category.toLowerCase().includes('enquête') || category.toLowerCase().includes('enquete');
             const badgeClass = isSurvey ? 'badge badge-survey' : 'badge';
@@ -661,10 +661,12 @@
       const article = articlesMap[id];
       if (article) {
         const topImage = article.image ? `<img src="${article.image}" style="width:100%; max-height:350px; object-fit:cover; border-radius:8px; margin-bottom:1rem;">` : '';
+        const surveyBtn = article.surveyLink ? `<a href="${article.surveyLink}" target="_blank" class="btn btn-survey-action" style="margin-bottom:1.5rem; display:inline-block; width:auto; padding:0.75rem 1.5rem;">📝 Vul de Enquête In ➔</a>` : '';
         
         document.getElementById('modal-body').innerHTML = `
           ${topImage}
           <h1 style="color: var(--accent); margin-top:0;">${article.title}</h1>
+          ${surveyBtn}
           <hr style="border-color: rgba(255,255,255,0.1); margin-bottom: 1.5rem;">
           <div>${marked.parse(article.bodyContent)}</div>
         `;
