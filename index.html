@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Onderzocht | Pretparken, Historie & Enquêtes</title>
+  <title>Onderzocht | Pretparken, Historie & Diepgaande Feiten</title>
   
   <!-- APP / PWA INSTELLINGEN -->
   <meta name="theme-color" content="#0f172a">
@@ -127,19 +127,6 @@
       justify-content: space-between;
       align-items: center;
       font-size: 0.85rem;
-    }
-
-    .notification-bar {
-      background: var(--card-bg);
-      border: 1px solid rgba(245, 158, 11, 0.3);
-      border-radius: 6px;
-      padding: 0.6rem 1rem;
-      margin-bottom: 1.5rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.85rem;
-      gap: 0.5rem;
     }
 
     .btn-notif-small {
@@ -375,6 +362,8 @@
     <button class="cat-btn active" id="btn-home" onclick="showPage('home')">🏠 Startpagina</button>
     <button class="cat-btn" id="btn-pretparken" onclick="showPage('pretparken')">🎢 Pretparken</button>
     <button class="cat-btn" id="btn-historie" onclick="showPage('historie')">📜 Historie</button>
+    <button class="cat-btn" id="btn-wetenschap" onclick="showPage('wetenschap')">🔬 Echte Wetenschap</button>
+    <button class="cat-btn" id="btn-vragen" onclick="showPage('vragen')">💡 Random Vragen</button>
     <button class="cat-btn" id="btn-enquetes" onclick="showPage('enquetes')">📊 Enquêtes</button>
   </nav>
 
@@ -383,11 +372,6 @@
     <div id="app-install-bar" class="app-install-bar">
       <span>📲 <strong>Installeer als App:</strong> Voeg Onderzocht toe aan je startscherm!</span>
       <button class="btn-notif-small" id="btn-install-app">Installeer</button>
-    </div>
-
-    <div class="notification-bar">
-      <span>🔔 <strong>Meldingen:</strong> Ontvang een bericht bij nieuwe onderzoeken.</span>
-      <button class="btn-notif-small" onclick="alert('Meldingen ingeschakeld!')">Aanzetten</button>
     </div>
 
     <!-- STARTPAGINA -->
@@ -401,8 +385,14 @@
       <div class="section-title">🎢 Pretparken</div>
       <div id="grid-pretparken" class="grid"><p class="empty-msg">Nog geen artikelen in deze categorie.</p></div>
 
-      <div class="section-title">📜 Geschiedenis van Objecten</div>
+      <div class="section-title">📜 Historie & Psychologie</div>
       <div id="grid-historie" class="grid"><p class="empty-msg">Nog geen artikelen in deze categorie.</p></div>
+
+      <div class="section-title">🔬 Echte Wetenschap</div>
+      <div id="grid-wetenschap" class="grid"><p class="empty-msg">Nog geen artikelen in deze categorie.</p></div>
+
+      <div class="section-title">💡 Random Vragen</div>
+      <div id="grid-vragen" class="grid"><p class="empty-msg">Nog geen artikelen in deze categorie.</p></div>
 
       <div class="section-title">📊 Enquêtes & Resultaten</div>
       <div id="grid-enquetes" class="grid"><p class="empty-msg">Nog geen enquêtes gepubliceerd.</p></div>
@@ -440,8 +430,18 @@
     </div>
 
     <div id="page-historie" class="page">
-      <div class="section-title">📜 Alle Artikelen: Historie van Objecten</div>
+      <div class="section-title">📜 Alle Artikelen: Historie</div>
       <div id="grid-cat-historie" class="grid"><p class="empty-msg">Geen artikelen in de categorie Historie.</p></div>
+    </div>
+
+    <div id="page-wetenschap" class="page">
+      <div class="section-title">🔬 Alle Artikelen: Echte Wetenschap</div>
+      <div id="grid-cat-wetenschap" class="grid"><p class="empty-msg">Geen artikelen in de categorie Echte Wetenschap.</p></div>
+    </div>
+
+    <div id="page-vragen" class="page">
+      <div class="section-title">💡 Alle Artikelen: Random Vragen</div>
+      <div id="grid-cat-vragen" class="grid"><p class="empty-msg">Geen artikelen in de categorie Random Vragen.</p></div>
     </div>
 
     <div id="page-enquetes" class="page">
@@ -463,6 +463,7 @@
   </footer>
 
   <script>
+    // PWA Manifest genereren
     const manifestContent = {
       name: "Onderzocht",
       short_name: "Onderzocht",
@@ -476,6 +477,15 @@
     const blob = new Blob([stringManifest], {type: 'application/json'});
     const manifestURL = URL.createObjectURL(blob);
     document.getElementById('manifest-placeholder').setAttribute('href', manifestURL);
+
+    // Service Worker Registreren voor PWA
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(reg => console.log('Service Worker geregistreerd!', reg))
+          .catch(err => console.log('Service Worker mislukt:', err));
+      });
+    }
 
     let deferredPrompt;
     window.addEventListener('beforeinstallprompt', (e) => {
@@ -533,13 +543,17 @@
         const gridMeestBekeken = document.getElementById('grid-meest-bekeken');
         const gridPretparken = document.getElementById('grid-pretparken');
         const gridHistorie = document.getElementById('grid-historie');
+        const gridWetenschap = document.getElementById('grid-wetenschap');
+        const gridVragen = document.getElementById('grid-vragen');
         const gridEnquetes = document.getElementById('grid-enquetes');
 
         const gridCatPretparken = document.getElementById('grid-cat-pretparken');
         const gridCatHistorie = document.getElementById('grid-cat-historie');
+        const gridCatWetenschap = document.getElementById('grid-cat-wetenschap');
+        const gridCatVragen = document.getElementById('grid-cat-vragen');
         const gridCatEnquetes = document.getElementById('grid-cat-enquetes');
 
-        let countNieuwste = 0, countPretparken = 0, countHistorie = 0, countEnquetes = 0;
+        let countNieuwste = 0, countPretparken = 0, countHistorie = 0, countWetenschap = 0, countVragen = 0, countEnquetes = 0;
 
         for (const [index, file] of allFiles.entries()) {
           if (file.name.endsWith('.md')) {
@@ -549,7 +563,8 @@
             const titleMatch = content.match(/title:\s*["']?(.*?)["']?\n/);
             const summaryMatch = content.match(/summary:\s*["']?(.*?)["']?\n/);
             const categoryMatch = content.match(/category:\s*["']?(.*?)["']?\n/);
-            const imageMatch = content.match(/image:\s*["']?(.*?)["']?\n/);
+            // Ondersteunt zowel 'image' als 'featured_image' vanuit Decap CMS
+            const imageMatch = content.match(/(?:image|featured_image):\s*["']?(.*?)["']?\n/);
             const surveyLinkMatch = content.match(/survey_link:\s*["']?(.*?)["']?\n/);
 
             const title = titleMatch ? titleMatch[1] : 'Geen titel';
@@ -557,7 +572,7 @@
             let category = categoryMatch ? categoryMatch[1] : 'Algemeen';
             if (file.isEnqueteFolder) category = 'Enquête';
 
-            const image = imageMatch ? imageMatch[1] : '';
+            const image = imageMatch ? imageMatch[1].trim() : '';
             const surveyLink = surveyLinkMatch ? surveyLinkMatch[1].trim() : '';
 
             const bodyContent = content.replace(/^---[\s\S]*?---/, '');
@@ -568,7 +583,6 @@
 
             const imageHtml = image ? `<div class="card-img-container"><img src="${image}" alt="${title}"></div>` : '';
 
-            // ALS ER EEN FORMULIERLINK IS, WORDT HET EEN DIRECTE KNOP, ANDERS LEES ARTIKEL
             let actionBtn = `<button class="btn" onclick="readArticle(${index})">Lees Artikel ➔</button>`;
             if (surveyLink && surveyLink !== '') {
               actionBtn = `<a href="${surveyLink}" target="_blank" class="btn btn-survey-action">📝 Enquête Invullen ➔</a>`;
@@ -580,7 +594,7 @@
                 <div class="card-body">
                   <span class="${badgeClass}">${category}</span>
                   <h3>${title}</h3>
-                  <p>${summary || 'Klik hieronder om me te doen.'}</p>
+                  <p>${summary || 'Klik hieronder om te lezen.'}</p>
                   ${actionBtn}
                 </div>
               </div>
@@ -619,6 +633,22 @@
               gridHistorie.innerHTML += cardHtml;
               gridCatHistorie.innerHTML += cardHtml;
               countHistorie++;
+            } else if (catLower.includes('wetenschap')) {
+              if (countWetenschap === 0) {
+                gridWetenschap.innerHTML = '';
+                gridCatWetenschap.innerHTML = '';
+              }
+              gridWetenschap.innerHTML += cardHtml;
+              gridCatWetenschap.innerHTML += cardHtml;
+              countWetenschap++;
+            } else if (catLower.includes('random') || catLower.includes('vragen')) {
+              if (countVragen === 0) {
+                gridVragen.innerHTML = '';
+                gridCatVragen.innerHTML = '';
+              }
+              gridVragen.innerHTML += cardHtml;
+              gridCatVragen.innerHTML += cardHtml;
+              countVragen++;
             }
           }
         }
