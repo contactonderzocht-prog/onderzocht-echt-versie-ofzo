@@ -1,8 +1,8 @@
 ---
 title: "📊 Enquête: Wat is de beste achtbaan van de Benelux?"
 date: 2026-10-25T23:00:00.000+01:00
-summary: Wat is jouw ultieme favoriet? Laat je stem horen in onze nieuwste
-  publieksenquête en help mee om de beste achtbaan van de Benelux te bepalen!
+summary: "Wat is jouw ultieme favoriet? Laat je stem horen in onze nieuwste
+  publieksenquête en help mee om de beste achtbaan van de Benelux te bepalen! "
 status: 🔴 Nu Actief
 link: https://forms.gle/7ww1GeQW4PM4Nv748
 image: /images/uploads/1024x576-baron-1898-1.jpg
